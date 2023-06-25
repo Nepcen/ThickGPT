@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Width Slider</title>
+  <style>
+    body {
+      width: 200px;
+      padding: 15px 10px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    #message {
+      text-align: center;
+      margin: 0;
+      margin-bottom: 10px;
+    }
+  </style>
+  <script type="module" src="popup.js"></script>
+</head>
+
+<body>
+  <h3 id="message">Thick GPT</h3>
+  <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 5px;">
+    <label for="widthSlider" id="widthSliderValueLabel">%46</label>
+    <input type="range" id="widthSlider" min="0" max="100" step="1">
+  </div>
+</body>
+
+</html>
