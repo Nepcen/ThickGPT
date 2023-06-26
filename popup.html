@@ -3,31 +3,33 @@
 
 <head>
   <title>Width Slider</title>
-  <style>
-    body {
-      width: 200px;
-      padding: 15px 10px;
-    }
-
-    input[type="range"] {
-      width: 100%;
-    }
-
-    #message {
-      text-align: center;
-      margin: 0;
-      margin-bottom: 10px;
-    }
-  </style>
   <script type="module" src="popup.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h3 id="message">Thick GPT</h3>
-  <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 5px;">
-    <label for="widthSlider" id="widthSliderValueLabel">%46</label>
-    <input type="range" id="widthSlider" min="0" max="100" step="1">
+  <h1 id="title">Thick GPT</h1>
+  <div class="el">
+    <span>Thickness</span>
+    <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 5px; width: 100%;">
+      <label for="widthSlider" id="widthSliderValueLabel">%46</label>
+      <input type="range" id="widthSlider" min="0" max="100" step="1">
+    </div>
   </div>
+  <footer>
+    <a href="https://github.com/nepcen" target="_blank">
+      <i class="fa-brands fa-github"></i>
+    </a>
+    <a href="https://www.linkedin.com/in/yusufabacik/" target="_blank">
+      <i class="fa-brands fa-linkedin-in"></i>
+    </a>
+    <a href="https://yusufabacik.dev" target="_blank">
+      <i class="fa-solid fa-link"></i>
+    </a>
+  </footer>
+
+  <span class="bottomLabel">&#60;Nepcen /&#62;</span>
 </body>
 
 </html>
