@@ -4,17 +4,30 @@
 <head>
   <title>Width Slider</title>
   <script type="module" src="popup.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <h1 id="title">Thick GPT</h1>
-  <div class="el">
-    <span>Thickness</span>
-    <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 5px; width: 100%;">
-      <label for="widthSlider" id="widthSliderValueLabel">%46</label>
-      <input type="range" id="widthSlider" min="0" max="100" step="1">
+  <div class="main">
+
+    <div class="el">
+      <span>Thickness</span>
+      <div>
+        <label for="widthSlider" id="widthSliderValueLabel">%46</label>
+        <input type="range" id="widthSlider" min="0" max="100" step="1">
+      </div>
+    </div>
+    <div class="el">
+      <div>
+        <input type="checkbox" id="includeSearchBar">
+        <label for="includeSearchBar">
+          Include search bar
+        </label>
+      </div>
     </div>
   </div>
   <footer>

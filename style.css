@@ -22,6 +22,14 @@ body {
   border-bottom: 2px solid white;
 }
 
+.main{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 10px;
+}
+
 .el {
   display: flex;
   flex-direction: column;
@@ -32,6 +40,15 @@ body {
   font-size: 18px;
 }
 
+.el > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 5px;
+  width: 100%;
+}
+
 #widthSliderValueLabel {
   width: 40px;
   font-size: 16px;
@@ -40,7 +57,7 @@ body {
 #widthSlider {
   height: 32px;
   -webkit-appearance: none;
-  width: 100%;
+  width: 205px;
   background-color: #00a67e;
 }
 
@@ -132,30 +149,36 @@ body {
   background: #017a5e;
 }
 
-footer{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
+#includeSearchBar{
+  width: 20px;
+  height: 20px;
+  margin: 0 10px;
 }
 
-footer a{
-    font-size: 26px;
-    color: white;
-    border-right: 1px solid rgba(255, 255, 255, .5);
-    padding-right: 10px;
+footer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-footer a:last-child{
-    border-right: 0;
-    padding-right: 0;
+footer a {
+  font-size: 26px;
+  color: white;
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+  padding-right: 10px;
 }
 
-.bottomLabel{
-    font-size: 20px;
-    color: white;
-    margin-top: 8px;
+footer a:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
+
+.bottomLabel {
+  font-size: 20px;
+  color: white;
+  margin-top: 8px;
 }

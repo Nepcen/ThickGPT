@@ -26,7 +26,7 @@ function isLeftMenuClosed() {
   else return true;
 }
 
-function changeElementWidth(width) {
+function changeElementWidth(width, includeSearchBar) {
   var classNameString;
 
   if (isLeftMenuClosed()) {
@@ -53,21 +53,50 @@ function changeElementWidth(width) {
       element.style.width = width + "%";
     });
   }
+
+  if(includeSearchBar){
+    const searchBar = document.querySelector("#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1.overflow-hidden > div > main > div.absolute.bottom-0.left-0.w-full.border-t.md\\:border-t-0.dark\\:border-white\\/20.md\\:border-transparent.md\\:dark\\:border-transparent.md\\:bg-vert-light-gradient.bg-white.dark\\:bg-gray-800.md\\:\\!bg-transparent.dark\\:md\\:bg-vert-dark-gradient.pt-2.md\\:pl-2.md\\:w-\\[calc\\(100\\%-\\.5rem\\)\\] > form");
+    
+    searchBar.className = "stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6";
+    searchBar.style.width = width + "%";
+    searchBar.style.margin = "auto";
+  }
 }
 
 // Slider değeri değiştiğinde mesaj gönder
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "changeWidth") {
-    changeElementWidth(request.widthValue);
-    console.log("content.js: " + request.widthValue);
-    chrome.storage.local.set({ widthValue: parseInt(request.widthValue) });
+    var includeSearchBar;
+    chrome.storage.local.get({widthValue: 46, includeSearchBar: false }, function (result) {
+      includeSearchBar = result.includeSearchBar;
+    });
+
+    changeElementWidth(request.widthValue, includeSearchBar);
+
+    chrome.storage.local.set({
+      widthValue: parseInt(request.widthValue),
+      includeSearchBar: includeSearchBar,
+    });
+  } else if (request.action === "includeSearchBar") {
+    var widthValue;
+    chrome.storage.local.get({ widthValue: 46 }, function (result) {
+      widthValue = result.widthValue;
+    });
+
+    chrome.storage.local.set({
+      widthValue: widthValue,
+      includeSearchBar: request.includeSearchBar,
+    });
   }
 });
 
 const changeElementWidthInterval = setInterval(() => {
-  chrome.storage.local.get({ widthValue: 46 }, function (result) {
-    changeElementWidth(result.widthValue);
-  });
+  chrome.storage.local.get(
+    { widthValue: 46, includeSearchBar: false },
+    function (result) {
+      changeElementWidth(result.widthValue, result.includeSearchBar);
+    }
+  );
 }, 100);
 
 function performCleanup() {
