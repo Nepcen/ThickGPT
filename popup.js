@@ -21,14 +21,14 @@ import { getActiveTabURL, defaultSliderWidthValue } from "./utils.js";
 document.addEventListener("DOMContentLoaded", function () {
   var widthSlider = document.getElementById("widthSlider");
   var widthSliderValueLabel = document.getElementById("widthSliderValueLabel");
-  var includeSearchBar = document.getElementById("includeSearchBar");
+  var includePromptBar = document.getElementById("includePromptBar");
 
   chrome.storage.local.get(
-    { widthValue: defaultSliderWidthValue, includeSearchBar: false},
+    { widthValue: defaultSliderWidthValue, includePromptBar: false},
     function (result) {
       widthSliderValueLabel.textContent = "%" + result.widthValue;
       widthSlider.value = result.widthValue;
-      includeSearchBar.checked = result.includeSearchBar
+      includePromptBar.checked = result.includePromptBar
     }
   );
 
@@ -45,12 +45,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  includeSearchBar.addEventListener("change", async () => {    
+  includePromptBar.addEventListener("change", async () => {    
     const activeTab = await getActiveTabURL();
     if (activeTab.url.includes("chat.openai.com")) {
       chrome.tabs.sendMessage(activeTab.id, {
-        action: "includeSearchBar",
-        includeSearchBar: includeSearchBar.checked,
+        action: "includePromptBar",
+        includePromptBar: includePromptBar.checked,
       });
     }
   })

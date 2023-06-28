@@ -26,7 +26,7 @@ function isLeftMenuClosed() {
   else return true;
 }
 
-function changeElementWidth(width, includeSearchBar) {
+function changeElementWidth(width, includePromptBar) {
   var classNameString;
 
   if (isLeftMenuClosed()) {
@@ -54,7 +54,7 @@ function changeElementWidth(width, includeSearchBar) {
     });
   }
 
-  if(includeSearchBar){
+  if(includePromptBar){
     const searchBar = document.querySelector("#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1.overflow-hidden > div > main > div.absolute.bottom-0.left-0.w-full.border-t.md\\:border-t-0.dark\\:border-white\\/20.md\\:border-transparent.md\\:dark\\:border-transparent.md\\:bg-vert-light-gradient.bg-white.dark\\:bg-gray-800.md\\:\\!bg-transparent.dark\\:md\\:bg-vert-dark-gradient.pt-2.md\\:pl-2.md\\:w-\\[calc\\(100\\%-\\.5rem\\)\\] > form");
     
     searchBar.className = "stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6";
@@ -66,18 +66,18 @@ function changeElementWidth(width, includeSearchBar) {
 // Slider değeri değiştiğinde mesaj gönder
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "changeWidth") {
-    var includeSearchBar;
-    chrome.storage.local.get({widthValue: 46, includeSearchBar: false }, function (result) {
-      includeSearchBar = result.includeSearchBar;
+    var includePromptBar;
+    chrome.storage.local.get({widthValue: 46, includePromptBar: false }, function (result) {
+      includePromptBar = result.includePromptBar;
     });
 
-    changeElementWidth(request.widthValue, includeSearchBar);
+    changeElementWidth(request.widthValue, includePromptBar);
 
     chrome.storage.local.set({
       widthValue: parseInt(request.widthValue),
-      includeSearchBar: includeSearchBar,
+      includePromptBar: includePromptBar,
     });
-  } else if (request.action === "includeSearchBar") {
+  } else if (request.action === "includePromptBar") {
     var widthValue;
     chrome.storage.local.get({ widthValue: 46 }, function (result) {
       widthValue = result.widthValue;
@@ -85,16 +85,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     chrome.storage.local.set({
       widthValue: widthValue,
-      includeSearchBar: request.includeSearchBar,
+      includePromptBar: request.includePromptBar,
     });
   }
 });
 
 const changeElementWidthInterval = setInterval(() => {
   chrome.storage.local.get(
-    { widthValue: 46, includeSearchBar: false },
+    { widthValue: 46, includePromptBar: false },
     function (result) {
-      changeElementWidth(result.widthValue, result.includeSearchBar);
+      changeElementWidth(result.widthValue, result.includePromptBar);
     }
   );
 }, 100);
