@@ -66,9 +66,36 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
   gap: 5px;
   width: 100%;
+}
+
+.el > div > div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  gap: 5px;
+  width: 100%;
+  margin-right: 5px;
+}
+
+.el > div > div .alignment{
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 0.15em solid transparent;
+  border-radius: 5px;
+  padding: 4px;
+  color: white;
+}
+
+.el > div > div .alignment.checked{
+  border: 0.15em solid white;
 }
 
 #widthSliderValueLabel {

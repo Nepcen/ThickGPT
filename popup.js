@@ -21,14 +21,16 @@ import { getActiveTabURL, defaultSliderWidthValue } from "./utils.js";
 document.addEventListener("DOMContentLoaded", function () {
   var widthSlider = document.getElementById("widthSlider");
   var widthSliderValueLabel = document.getElementById("widthSliderValueLabel");
+  var alignmentBtns = document.getElementsByClassName("alignment");
   var includePromptBar = document.getElementById("includePromptBar");
 
   chrome.storage.local.get(
-    { widthValue: defaultSliderWidthValue, includePromptBar: false},
+    { widthValue: defaultSliderWidthValue, includePromptBar: false, alignment: "center" },
     function (result) {
       widthSliderValueLabel.textContent = "%" + result.widthValue;
       widthSlider.value = result.widthValue;
       includePromptBar.checked = result.includePromptBar
+      document.querySelector(`.alignment#${result.alignment}`).classList.add("checked");
     }
   );
 
@@ -45,7 +47,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  includePromptBar.addEventListener("change", async () => {    
+  for (let i = 0; i < alignmentBtns.length; i++) {
+    alignmentBtns[i].addEventListener("click", async () => {
+      const activeTab = await getActiveTabURL();
+      var alignment = alignmentBtns[i].id;
+
+      for (let j = 0; j < alignmentBtns.length; j++) {
+        alignmentBtns[j].classList.remove("checked");
+      }
+
+      alignmentBtns[i].classList.add("checked");
+
+      if (activeTab.url.includes("chat.openai.com")) {
+        chrome.tabs.sendMessage(activeTab.id, {
+          action: "changeAlignment",
+          alignment: alignment,
+        });
+      }
+    });
+  }
+
+  includePromptBar.addEventListener("change", async () => {
     const activeTab = await getActiveTabURL();
     if (activeTab.url.includes("chat.openai.com")) {
       chrome.tabs.sendMessage(activeTab.id, {
