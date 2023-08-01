@@ -30,10 +30,6 @@
       "matches": ["https://chat.openai.com/*"]
     }
   ],
-  "background": {
-    "service_worker": "background.js",
-    "type": "module"
-  },
   "icons": {
     "16": "assets/icons/icon-16.png",
     "24": "assets/icons/icon-24.png",
