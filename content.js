@@ -60,12 +60,25 @@ function changeElementWidth(width, includePromptBar, alignment) {
     });
   }
 
-  if (includePromptBar) {
-    const searchBar = document.querySelector("#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1.overflow-hidden > div > main > div.absolute.bottom-0.left-0.w-full.border-t.md\\:border-t-0.dark\\:border-white\\/20.md\\:border-transparent.md\\:dark\\:border-transparent.md\\:bg-vert-light-gradient.bg-white.dark\\:bg-gray-800.md\\:\\!bg-transparent.dark\\:md\\:bg-vert-dark-gradient.pt-2.md\\:pl-2.md\\:w-\\[calc\\(100\\%-\\.5rem\\)\\] > form");
+  const promptBar = document.querySelector("#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1.overflow-hidden > div > main > div.absolute.bottom-0.left-0.w-full.border-t.md\\:border-t-0.dark\\:border-white\\/20.md\\:border-transparent.md\\:dark\\:border-transparent.md\\:bg-vert-light-gradient.bg-white.dark\\:bg-gray-800.md\\:\\!bg-transparent.dark\\:md\\:bg-vert-dark-gradient.pt-2.md\\:pl-2.md\\:w-\\[calc\\(100\\%-\\.5rem\\)\\] > form");
+  const insidePromptBar = document.querySelector("#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1.overflow-hidden > div > main > div.absolute.bottom-0.left-0.w-full.border-t.md\\:border-t-0.dark\\:border-white\\/20.md\\:border-transparent.md\\:dark\\:border-transparent.md\\:bg-vert-light-gradient.bg-white.dark\\:bg-gray-800.md\\:\\!bg-transparent.dark\\:md\\:bg-vert-dark-gradient.pt-2.md\\:pl-2.md\\:w-\\[calc\\(100\\%-\\.5rem\\)\\] > form > div");
 
-    searchBar.className = "stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6";
-    searchBar.style.width = width + "%";
-    searchBar.style.margin = "auto";
+  if (includePromptBar == true) {
+    promptBar.className = "stretch flex flex-row gap-3 last:mb-2 md:last:mb-6";
+    promptBar.style.width = "100%";
+    promptBar.style.justifyContent = alignment;
+
+    insidePromptBar.className = "relative flex h-full items-stretch md:flex-col";
+    insidePromptBar.style.width = width + "%";
+    insidePromptBar.style.marginRight = "8px";
+  } else if(includePromptBar == false) {
+    promptBar.style.width = "";
+    promptBar.style.justifyContent = "";
+    promptBar.className = "stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl";
+
+    insidePromptBar.style.width = ""
+    insidePromptBar.style.marginRight = "";
+    insidePromptBar.className = "relative flex h-full flex-1 items-stretch md:flex-col";
   }
 }
 
@@ -93,7 +106,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       widthValue = result.widthValue;
       alignment = result.alignment;
     });
-    
+
     changeElementWidth(widthValue, request.includePromptBar, alignment);
 
     chrome.storage.local.set({
