@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var widthSliderValueLabel = document.getElementById("widthSliderValueLabel");
   var alignmentBtns = document.getElementsByClassName("alignment");
   var includePromptBar = document.getElementById("includePromptBar");
+  var resetBtn = document.getElementById("resetBtn");
 
   chrome.storage.local.get(
     { widthValue: defaultSliderWidthValue, includePromptBar: false, alignment: "center" },
@@ -76,4 +77,22 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   })
+
+  resetBtn.addEventListener("click", async () => {
+
+    widthSliderValueLabel.textContent = "%" + defaultSliderWidthValue;
+    widthSlider.value = defaultSliderWidthValue;
+    includePromptBar.checked = false;
+    for (let j = 0; j < alignmentBtns.length; j++) {
+      alignmentBtns[j].classList.remove("checked");
+    }
+    document.querySelector(`.alignment#center`).classList.add("checked");
+
+    const activeTab = await getActiveTabURL();
+    if (activeTab.url.includes("chat.openai.com")) {
+      chrome.tabs.sendMessage(activeTab.id, {
+        action: "reset",
+      });
+    }
+  });
 });

@@ -71,6 +71,10 @@ body {
   width: 100%;
 }
 
+.el div:has(#resetBtn){
+  justify-content: end;
+}
+
 .el > div > div{
   display: flex;
   flex-direction: row;
@@ -252,6 +256,16 @@ input[type="checkbox"]:disabled {
 
   color: var(--form-control-disabled);
   cursor: not-allowed;
+}
+
+#resetBtn{
+  background-color: #00a67e;
+  outline: none;
+  border: 2px solid white;
+  border-radius: 5px;
+  padding: 3px 5px;
+  color: white;
+  cursor: pointer;
 }
 
 footer {

@@ -71,7 +71,7 @@ function changeElementWidth(width, includePromptBar, alignment) {
     insidePromptBar.className = "relative flex h-full items-stretch md:flex-col";
     insidePromptBar.style.width = width + "%";
     insidePromptBar.style.marginRight = "8px";
-  } else if(includePromptBar == false) {
+  } else if (includePromptBar == false) {
     promptBar.style.width = "";
     promptBar.style.justifyContent = "";
     promptBar.className = "stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl";
@@ -128,6 +128,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       widthValue: parseInt(widthValue),
       includePromptBar: includePromptBar,
       alignment: request.alignment,
+    });
+  } else if (request.action === "reset") {
+    changeElementWidth(46, false, "center");
+
+    chrome.storage.local.set({
+      widthValue: 46,
+      includePromptBar: false,
+      alignment: "center",
     });
   }
 });
