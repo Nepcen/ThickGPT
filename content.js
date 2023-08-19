@@ -60,8 +60,8 @@ function changeElementWidth(width, includePromptBar, alignment) {
     });
   }
 
-  const promptBar = document.querySelector("#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1.overflow-hidden > div > main > div.absolute.bottom-0.left-0.w-full.border-t.md\\:border-t-0.dark\\:border-white\\/20.md\\:border-transparent.md\\:dark\\:border-transparent.md\\:bg-vert-light-gradient.bg-white.dark\\:bg-gray-800.md\\:\\!bg-transparent.dark\\:md\\:bg-vert-dark-gradient.pt-2.md\\:pl-2.md\\:w-\\[calc\\(100\\%-\\.5rem\\)\\] > form");
-  const insidePromptBar = document.querySelector("#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.relative.flex.h-full.max-w-full.flex-1.overflow-hidden > div > main > div.absolute.bottom-0.left-0.w-full.border-t.md\\:border-t-0.dark\\:border-white\\/20.md\\:border-transparent.md\\:dark\\:border-transparent.md\\:bg-vert-light-gradient.bg-white.dark\\:bg-gray-800.md\\:\\!bg-transparent.dark\\:md\\:bg-vert-dark-gradient.pt-2.md\\:pl-2.md\\:w-\\[calc\\(100\\%-\\.5rem\\)\\] > form > div");
+  const promptBar = document.querySelector("main div.absolute form");
+  const insidePromptBar = document.querySelector("main div.absolute form > div");
 
   if (includePromptBar == true) {
     promptBar.className = "stretch flex flex-row gap-3 last:mb-2 md:last:mb-6";
@@ -92,28 +92,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       alignment = result.alignment;
     });
 
-    changeElementWidth(request.widthValue, includePromptBar, alignment);
-
     chrome.storage.local.set({
       widthValue: parseInt(request.widthValue),
       includePromptBar: includePromptBar,
       alignment: alignment,
     });
-  } else if (request.action === "includePromptBar") {
-    var widthValue;
-    var alignment;
-    chrome.storage.local.get({ widthValue: 46, includePromptBar: false, alignment: "center" }, function (result) {
-      widthValue = result.widthValue;
-      alignment = result.alignment;
-    });
 
-    changeElementWidth(widthValue, request.includePromptBar, alignment);
-
-    chrome.storage.local.set({
-      widthValue: parseInt(widthValue),
-      includePromptBar: request.includePromptBar,
-      alignment: alignment,
-    });
+    changeElementWidth(request.widthValue, includePromptBar, alignment);
   } else if (request.action === "changeAlignment") {
     var includePromptBar;
     var widthValue;
@@ -122,21 +107,36 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       includePromptBar = result.includePromptBar;
     });
 
-    changeElementWidth(widthValue, includePromptBar, request.alignment);
-
     chrome.storage.local.set({
       widthValue: parseInt(widthValue),
       includePromptBar: includePromptBar,
       alignment: request.alignment,
     });
-  } else if (request.action === "reset") {
-    changeElementWidth(46, false, "center");
 
+    changeElementWidth(widthValue, includePromptBar, request.alignment);
+  } else if (request.action === "includePromptBar") {
+    var widthValue;
+    var alignment;
+    chrome.storage.local.get({ widthValue: 46, includePromptBar: false, alignment: "center" }, function (result) {
+      widthValue = result.widthValue;
+      alignment = result.alignment;
+    });
+
+    chrome.storage.local.set({
+      widthValue: parseInt(widthValue),
+      includePromptBar: request.includePromptBar,
+      alignment: alignment,
+    });
+
+    changeElementWidth(widthValue, request.includePromptBar, alignment);
+  } else if (request.action === "reset") {
     chrome.storage.local.set({
       widthValue: 46,
       includePromptBar: false,
       alignment: "center",
     });
+
+    changeElementWidth(46, false, "center");
   }
 });
 
