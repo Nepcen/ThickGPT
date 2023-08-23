@@ -3,7 +3,12 @@ Expand your content area in ChatGPT
 
 Made By [Nepcen](https://www.linkedin.com/in/yusufabacik/)
 
-[Edge Addons](https://microsoftedge.microsoft.com/addons/detail/thickgpt/hibaaaoeopknenmionmkoneaioeilloh) 
+## Install
+You can download and use ThickGPT for free from the preferred extension store
+
+[Microsoft Edge Addons](https://microsoftedge.microsoft.com/addons/detail/thickgpt/hibaaaoeopknenmionmkoneaioeilloh)  
+
+[Chrome Web Store](https://chrome.google.com/webstore/detail/thickgpt/gfofgbbnpkaffbkkdgahpkeffghhfkdf) 
 
 ## Licence
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
