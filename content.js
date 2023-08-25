@@ -15,142 +15,123 @@
 /*                                                                                        */
 /******************************************************************************************/
 
-function isLeftMenuClosed() {
-  var element = document
-    .querySelector(
-      "#__next > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.dark.flex-shrink-0.overflow-x-hidden.bg-gray-900"
-    )
-    .getBoundingClientRect();
+console.log("ThickGPT is working");
 
-  if (element.width > 0) return false;
-  else return true;
+function isLeftMenuClosed() {
+  var closeBtn = document.querySelector("#__next > div > div > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.absolute.left-2.top-2.z-10.hidden.md\\:inline-block");
+  return closeBtn ? true : false
 }
 
-function changeElementWidth(width, includePromptBar, alignment) {
-  var classNameString;
+function refreshElements() {
+  chrome.storage.local.get(
+    { widthValue: 46, includePromptBar: false, alignment: "center" },
+    function (result) {
+      var width = result.widthValue
+      var includePromptBar = result.includePromptBar
+      var alignment = result.alignment
 
-  if (isLeftMenuClosed()) {
-    classNameString =
-      "flex p-4 gap-4 text-base md:gap-6 md:max-w-3xl md:py-6 lg:px-0 m-auto";
-  } else {
-    classNameString =
-      "flex p-4 gap-4 text-base md:gap-6 md:max-w-2xl lg:max-w-[38rem] xl:max-w-3xl md:py-6 lg:px-0 m-auto";
-  }
-  var elements = document.getElementsByClassName(classNameString);
+      var classNameString;
 
-  if (elements.length) {
-    Array.from(elements).forEach((element) => {
-      element.className = "flex gap-4 text-base md:gap-6 md:py-6";
-      element.style.paddingRight = "35px";
-      element.style.paddingLeft = "10px";
-      element.style.width = width + "%";
+      if (isLeftMenuClosed()) {
+        console.log("üst");
+        classNameString = "flex p-4 gap-4 text-base md:gap-6 md:max-w-3xl md:py-6 lg:px-0 m-auto";
+      } else {
+        console.log("alt");
+        classNameString = "flex p-4 gap-4 text-base md:gap-6 md:max-w-2xl lg:max-w-[38rem] xl:max-w-3xl md:py-6 lg:px-0 m-auto";
+      }
 
-      element.parentNode.style.display = "flex";
-      element.parentNode.style.justifyContent = alignment;
-    });
-  } else {
-    var elements = document.getElementsByClassName(
-      "flex gap-4 text-base md:gap-6 md:py-6"
-    );
-    Array.from(elements).forEach((element) => {
-      element.style.width = width + "%";
+      var elements = document.getElementsByClassName(classNameString);
 
-      element.parentNode.style.display = "flex";
-      element.parentNode.style.justifyContent = alignment;
-    });
-  }
+      console.log("Düznlenecek elementler:");
+      console.log(elements);
 
-  const promptBar = document.querySelector("main div.absolute form");
-  const insidePromptBar = document.querySelector("main div.absolute form > div");
+      if (elements.length) {
+        Array.from(elements).forEach((element) => {
+          element.className = "flex gap-4 text-base md:gap-6 md:py-6";
+          element.style.paddingRight = "35px";
+          element.style.paddingLeft = "10px";
+          element.style.width = width + "%";
 
-  if (includePromptBar == true) {
-    promptBar.className = "stretch flex flex-row gap-3 last:mb-2 md:last:mb-6";
-    promptBar.style.width = "100%";
-    promptBar.style.justifyContent = alignment;
+          element.parentNode.style.display = "flex";
+          element.parentNode.style.justifyContent = alignment;
+        });
+      } else {
+        var elements = document.getElementsByClassName(
+          "flex gap-4 text-base md:gap-6 md:py-6"
+        );
+        Array.from(elements).forEach((element) => {
+          element.style.width = width + "%";
 
-    insidePromptBar.className = "relative flex h-full items-stretch md:flex-col";
-    insidePromptBar.style.width = width + "%";
-    insidePromptBar.style.marginRight = "8px";
-  } else if (includePromptBar == false) {
-    promptBar.style.width = "";
-    promptBar.style.justifyContent = "";
-    promptBar.className = "stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl";
+          element.parentNode.style.display = "flex";
+          element.parentNode.style.justifyContent = alignment;
+        });
+      }
 
-    insidePromptBar.style.width = ""
-    insidePromptBar.style.marginRight = "";
-    insidePromptBar.className = "relative flex h-full flex-1 items-stretch md:flex-col";
-  }
+      const promptBar = document.querySelector("main div.absolute form");
+      const insidePromptBar = document.querySelector("main div.absolute form > div");
+
+      if (includePromptBar == true) {
+        promptBar.className = "stretch flex flex-row gap-3 last:mb-2 md:last:mb-6";
+        promptBar.style.width = "100%";
+        promptBar.style.justifyContent = alignment;
+
+        insidePromptBar.className = "relative flex h-full items-stretch md:flex-col";
+        insidePromptBar.style.width = width + "%";
+        insidePromptBar.style.marginRight = "8px";
+      } else if (includePromptBar == false) {
+        promptBar.style.width = "";
+        promptBar.style.justifyContent = "";
+        promptBar.className = "stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl";
+
+        insidePromptBar.style.width = ""
+        insidePromptBar.style.marginRight = "";
+        insidePromptBar.className = "relative flex h-full flex-1 items-stretch md:flex-col";
+      }
+    }
+  )
 }
 
 // Slider değeri değiştiğinde mesaj gönder
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "changeWidth") {
-    var includePromptBar;
-    var alignment;
-    chrome.storage.local.get({ widthValue: 46, includePromptBar: false, alignment: "center" }, function (result) {
-      includePromptBar = result.includePromptBar;
-      alignment = result.alignment;
-    });
-
     chrome.storage.local.set({
       widthValue: parseInt(request.widthValue),
-      includePromptBar: includePromptBar,
-      alignment: alignment,
     });
-
-    changeElementWidth(request.widthValue, includePromptBar, alignment);
   } else if (request.action === "changeAlignment") {
-    var includePromptBar;
-    var widthValue;
-    chrome.storage.local.get({ widthValue: 46, includePromptBar: false, alignment: "center" }, function (result) {
-      widthValue = result.widthValue;
-      includePromptBar = result.includePromptBar;
-    });
-
     chrome.storage.local.set({
-      widthValue: parseInt(widthValue),
-      includePromptBar: includePromptBar,
       alignment: request.alignment,
     });
-
-    changeElementWidth(widthValue, includePromptBar, request.alignment);
   } else if (request.action === "includePromptBar") {
-    var widthValue;
-    var alignment;
-    chrome.storage.local.get({ widthValue: 46, includePromptBar: false, alignment: "center" }, function (result) {
-      widthValue = result.widthValue;
-      alignment = result.alignment;
-    });
-
     chrome.storage.local.set({
-      widthValue: parseInt(widthValue),
       includePromptBar: request.includePromptBar,
-      alignment: alignment,
     });
-
-    changeElementWidth(widthValue, request.includePromptBar, alignment);
   } else if (request.action === "reset") {
     chrome.storage.local.set({
       widthValue: 46,
       includePromptBar: false,
       alignment: "center",
     });
+  }
 
-    changeElementWidth(46, false, "center");
+  refreshElements()
+});
+
+const chatObserver = new MutationObserver((mutationsList, observer) => {
+  for (const mutation of mutationsList) {
+    for (const node of mutation.addedNodes) {
+      if (node.nodeName === "DIV") {
+        refreshElements()
+      }
+    }
+    for (const node of mutation.removedNodes) {
+      if (node.nodeName === "DIV") {
+        refreshElements()
+      }
+    }
   }
 });
 
-const changeElementWidthInterval = setInterval(() => {
-  chrome.storage.local.get(
-    { widthValue: 46, includePromptBar: false, alignment: "center" },
-    function (result) {
-      changeElementWidth(result.widthValue, result.includePromptBar, result.alignment);
-    }
-  );
-}, 100);
+chatObserver.observe(document.body, { childList: true, subtree: true });
 
-function performCleanup() {
-  clearInterval(changeElementWidthInterval);
-}
-
-window.addEventListener("beforeunload", performCleanup);
+// İlk çalıştırma
+refreshElements()
