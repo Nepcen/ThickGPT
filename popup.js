@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (activeTab.url.includes("chat.openai.com")) {
       chrome.tabs.sendMessage(activeTab.id, {
-        action: "changeWidth",
         width: width,
       });
     }
@@ -61,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (activeTab.url.includes("chat.openai.com")) {
         chrome.tabs.sendMessage(activeTab.id, {
-          action: "changeAlignment",
           alignment: alignment,
         });
       }
@@ -72,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const activeTab = await getActiveTabURL();
     if (activeTab.url.includes("chat.openai.com")) {
       chrome.tabs.sendMessage(activeTab.id, {
-        action: "includePromptBar",
         includePromptBar: includePromptBar.checked,
       });
     }
@@ -91,7 +88,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const activeTab = await getActiveTabURL();
     if (activeTab.url.includes("chat.openai.com")) {
       chrome.tabs.sendMessage(activeTab.id, {
-        action: "reset",
+        width: 46,
+        includePromptBar: false,
+        alignment: "center",
       });
     }
   });

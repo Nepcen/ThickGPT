@@ -83,42 +83,12 @@ function refreshElements() {
 }
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.action === "changeWidth") {
-    chrome.storage.local.set({
-      width: parseInt(request.width),
-    });
-  } else if (request.action === "changeAlignment") {
-    chrome.storage.local.set({
-      alignment: request.alignment,
-    });
-  } else if (request.action === "includePromptBar") {
-    chrome.storage.local.set({
-      includePromptBar: request.includePromptBar,
-    });
-  } else if (request.action === "reset") {
-    chrome.storage.local.set({
-      width: 46,
-      includePromptBar: false,
-      alignment: "center",
-    });
-  }
-
+  chrome.storage.local.set(request);
   refreshElements()
 });
 
 const chatObserver = new MutationObserver((mutationsList, observer) => {
-  for (const mutation of mutationsList) {
-    for (const node of mutation.addedNodes) {
-      if (node.nodeName === "DIV") {
-        refreshElements()
-      }
-    }
-    for (const node of mutation.removedNodes) {
-      if (node.nodeName === "DIV") {
-        refreshElements()
-      }
-    }
-  }
+  refreshElements()
 });
 
 chatObserver.observe(document.body, { childList: true, subtree: true });
