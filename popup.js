@@ -26,10 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var resetBtn = document.getElementById("resetBtn");
 
   chrome.storage.local.get(
-    { widthValue: defaultSliderWidthValue, includePromptBar: false, alignment: "center" },
+    { width: defaultSliderWidthValue, includePromptBar: false, alignment: "center" },
     function (result) {
-      widthSliderValueLabel.textContent = "%" + result.widthValue;
-      widthSlider.value = result.widthValue;
+      widthSliderValueLabel.textContent = "%" + result.width;
+      widthSlider.value = result.width;
       includePromptBar.checked = result.includePromptBar
       document.querySelector(`.alignment#${result.alignment}`).classList.add("checked");
     }
@@ -37,13 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   widthSlider.addEventListener("input", async function () {
     const activeTab = await getActiveTabURL();
-    var widthValue = parseInt(widthSlider.value);
-    widthSliderValueLabel.innerHTML = "%" + widthValue;
+    var width = parseInt(widthSlider.value);
+    widthSliderValueLabel.innerHTML = "%" + width;
 
     if (activeTab.url.includes("chat.openai.com")) {
       chrome.tabs.sendMessage(activeTab.id, {
         action: "changeWidth",
-        widthValue: widthValue,
+        width: width,
       });
     }
   });

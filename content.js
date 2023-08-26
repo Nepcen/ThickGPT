@@ -24,26 +24,17 @@ function isLeftMenuClosed() {
 
 function refreshElements() {
   chrome.storage.local.get(
-    { widthValue: 46, includePromptBar: false, alignment: "center" },
+    { width: 46, includePromptBar: false, alignment: "center" },
     function (result) {
-      var width = result.widthValue
+      var width = result.width
       var includePromptBar = result.includePromptBar
       var alignment = result.alignment
+      var classNameString = "flex p-4 gap-4 text-base md:gap-6 md:max-w-2xl lg:max-w-[38rem] xl:max-w-3xl md:py-6 lg:px-0 m-auto";
 
-      var classNameString;
-
-      if (isLeftMenuClosed()) {
-        console.log("üst");
+      if (isLeftMenuClosed())
         classNameString = "flex p-4 gap-4 text-base md:gap-6 md:max-w-3xl md:py-6 lg:px-0 m-auto";
-      } else {
-        console.log("alt");
-        classNameString = "flex p-4 gap-4 text-base md:gap-6 md:max-w-2xl lg:max-w-[38rem] xl:max-w-3xl md:py-6 lg:px-0 m-auto";
-      }
 
       var elements = document.getElementsByClassName(classNameString);
-
-      console.log("Düznlenecek elementler:");
-      console.log(elements);
 
       if (elements.length) {
         Array.from(elements).forEach((element) => {
@@ -91,11 +82,10 @@ function refreshElements() {
   )
 }
 
-// Slider değeri değiştiğinde mesaj gönder
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "changeWidth") {
     chrome.storage.local.set({
-      widthValue: parseInt(request.widthValue),
+      width: parseInt(request.width),
     });
   } else if (request.action === "changeAlignment") {
     chrome.storage.local.set({
@@ -107,7 +97,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     });
   } else if (request.action === "reset") {
     chrome.storage.local.set({
-      widthValue: 46,
+      width: 46,
       includePromptBar: false,
       alignment: "center",
     });
@@ -133,5 +123,4 @@ const chatObserver = new MutationObserver((mutationsList, observer) => {
 
 chatObserver.observe(document.body, { childList: true, subtree: true });
 
-// İlk çalıştırma
 refreshElements()
