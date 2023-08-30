@@ -17,11 +17,6 @@
 
 console.log("ThickGPT is working");
 
-function isLeftMenuClosed() {
-  var closeBtn = document.querySelector("#__next > div > div > div.overflow-hidden.w-full.h-full.relative.flex.z-0 > div.absolute.left-2.top-2.z-10.hidden.md\\:inline-block");
-  return closeBtn ? true : false
-}
-
 function refreshElements() {
   chrome.storage.local.get(
     { width: 46, includePromptBar: false, alignment: "center" },
@@ -29,12 +24,8 @@ function refreshElements() {
       var width = result.width
       var includePromptBar = result.includePromptBar
       var alignment = result.alignment
-      var classNameString = "flex p-4 gap-4 text-base md:gap-6 md:max-w-2xl lg:max-w-[38rem] xl:max-w-3xl md:py-6 lg:px-0 m-auto";
 
-      if (isLeftMenuClosed())
-        classNameString = "flex p-4 gap-4 text-base md:gap-6 md:max-w-3xl md:py-6 lg:px-0 m-auto";
-
-      var elements = document.getElementsByClassName(classNameString);
+      var elements = document.querySelector("header").parentNode.querySelectorAll("& > div > div > div")
 
       if (elements.length) {
         Array.from(elements).forEach((element) => {
