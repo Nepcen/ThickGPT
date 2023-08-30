@@ -25,23 +25,15 @@ function refreshElements() {
       var includePromptBar = result.includePromptBar
       var alignment = result.alignment
 
-      var elements = document.querySelector("header").parentNode.querySelectorAll("& > div > div > div")
+      var elements = document.querySelector("header")?.parentNode.querySelectorAll("& > div > div > div")
 
-      if (elements.length) {
+      if (elements?.length) {
         Array.from(elements).forEach((element) => {
-          element.className = "flex gap-4 text-base md:gap-6 md:py-6";
-          element.style.paddingRight = "35px";
-          element.style.paddingLeft = "10px";
-          element.style.width = width + "%";
-
-          element.parentNode.style.display = "flex";
-          element.parentNode.style.justifyContent = alignment;
-        });
-      } else {
-        var elements = document.getElementsByClassName(
-          "flex gap-4 text-base md:gap-6 md:py-6"
-        );
-        Array.from(elements).forEach((element) => {
+          if (element.className != "flex gap-4 text-base md:gap-6 md:py-6") {
+            element.className = "flex gap-4 text-base md:gap-6 md:py-6";
+            element.style.paddingRight = "35px";
+            element.style.paddingLeft = "10px";
+          }
           element.style.width = width + "%";
 
           element.parentNode.style.display = "flex";
