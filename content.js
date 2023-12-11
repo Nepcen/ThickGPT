@@ -25,7 +25,7 @@ function refreshElements() {
       var includePromptBar = result.includePromptBar
       var alignment = result.alignment
 
-      var elements = document.querySelector("header")?.parentNode.querySelectorAll("& > div > div > div")
+      var elements = document.querySelectorAll("main > div:nth-child(2) > div:first-child > div > div > div > div:not(.sticky) > div:not(.group) > div");
 
       if (elements?.length) {
         Array.from(elements).forEach((element) => {
@@ -33,6 +33,9 @@ function refreshElements() {
             element.className = "flex gap-4 text-base md:gap-6 md:py-6";
             element.style.paddingRight = "35px";
             element.style.paddingLeft = "10px";
+            
+            var innerElement = element.querySelector("div:nth-child(2)");
+            if (innerElement) innerElement.style.width = "100%";
           }
           element.style.width = width + "%";
 
@@ -41,8 +44,8 @@ function refreshElements() {
         });
       }
 
-      const promptBar = document.querySelector("main div.absolute form");
-      const insidePromptBar = document.querySelector("main div.absolute form > div");
+      const promptBar = document.querySelector("main form");
+      const insidePromptBar = document.querySelector("main form > div");
 
       if (includePromptBar == true) {
         promptBar.className = "stretch flex flex-row gap-3 last:mb-2 md:last:mb-6";
@@ -51,6 +54,7 @@ function refreshElements() {
 
         insidePromptBar.className = "relative flex h-full items-stretch md:flex-col";
         insidePromptBar.style.width = width + "%";
+        insidePromptBar.style.marginLeft = "8px";
         insidePromptBar.style.marginRight = "8px";
       } else if (includePromptBar == false) {
         promptBar.style.width = "";
@@ -58,6 +62,7 @@ function refreshElements() {
         promptBar.className = "stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl";
 
         insidePromptBar.style.width = ""
+        insidePromptBar.style.marginLeft = "";
         insidePromptBar.style.marginRight = "";
         insidePromptBar.className = "relative flex h-full flex-1 items-stretch md:flex-col";
       }
