@@ -29,8 +29,8 @@ function refreshElements() {
 
       if (elements?.length) {
         Array.from(elements).forEach((element) => {
-          if (element.className != "flex gap-4 text-base md:gap-6 md:py-6") {
-            element.className = "flex gap-4 text-base md:gap-6 md:py-6";
+          if (element.className != "flex gap-4 text-base md:gap-6 md:py-6 group") {
+            element.className = "flex gap-4 text-base md:gap-6 md:py-6 group";
             element.style.paddingRight = "35px";
             element.style.paddingLeft = "10px";
             

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ThickGPT",
-  "version": "1.3",
+  "version": "1.4",
   "description": "ThickGPT is better!",
   "permissions": ["storage", "tabs"],
   "host_permissions": ["https://chat.openai.com/*"],
