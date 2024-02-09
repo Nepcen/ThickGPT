@@ -15,70 +15,88 @@
 /*                                                                                        */
 /******************************************************************************************/
 
-console.log("ThickGPT is working");
+console.log("ThickGPT is working")
 
 function refreshElements() {
   chrome.storage.local.get(
-    { width: 46, includePromptBar: false, alignment: "center" },
+    {
+      width: 46,
+      includePromptBar: false,
+      alignment: "center",
+      promptBarHeight: 0,
+    },
     function (result) {
       var width = result.width
       var includePromptBar = result.includePromptBar
       var alignment = result.alignment
 
-      var elements = document.querySelectorAll("main > div:nth-child(2) > div:first-child > div > div > div > div:not(.sticky) > div:not(.group) > div");
+      var elements = document.querySelectorAll(
+        "main > div:nth-child(2) > div:first-child > div > div > div > div:not(.sticky) > div:not(.group) > div"
+      )
 
       if (elements?.length) {
         Array.from(elements).forEach((element) => {
-          if (element.className != "flex gap-4 text-base md:gap-6 md:py-6 group") {
-            element.className = "flex gap-4 text-base md:gap-6 md:py-6 group";
-            element.style.paddingRight = "35px";
-            element.style.paddingLeft = "10px";
-            
-            var innerElement = element.querySelector("div:nth-child(2)");
-            if (innerElement) innerElement.style.width = "100%";
-          }
-          element.style.width = width + "%";
+          if (
+            element.className != "flex gap-4 text-base md:gap-6 md:py-6 group"
+          ) {
+            element.className = "flex gap-4 text-base md:gap-6 md:py-6 group"
+            element.style.paddingRight = "35px"
+            element.style.paddingLeft = "10px"
 
-          element.parentNode.style.display = "flex";
-          element.parentNode.style.justifyContent = alignment;
-        });
+            var innerElement = element.querySelector("div:nth-child(2)")
+            if (innerElement) innerElement.style.width = "100%"
+          }
+          element.style.width = width + "%"
+
+          element.parentNode.style.display = "flex"
+          element.parentNode.style.justifyContent = alignment
+        })
       }
 
-      const promptBar = document.querySelector("main form");
-      const insidePromptBar = document.querySelector("main form > div");
+      const promptBar = document.querySelector("main form")
+      const insidePromptBar = document.querySelector("main form > div")
 
       if (includePromptBar == true) {
-        promptBar.className = "stretch flex flex-row gap-3 last:mb-2 md:last:mb-6";
-        promptBar.style.width = "100%";
-        promptBar.style.justifyContent = alignment;
+        promptBar.className =
+          "stretch flex flex-row gap-3 last:mb-2 md:last:mb-6"
+        promptBar.style.width = "100%"
+        promptBar.style.justifyContent = alignment
 
-        insidePromptBar.className = "relative flex h-full items-stretch md:flex-col";
-        insidePromptBar.style.width = width + "%";
-        insidePromptBar.style.marginLeft = "8px";
-        insidePromptBar.style.marginRight = "8px";
+        insidePromptBar.className =
+          "relative flex h-full items-stretch md:flex-col"
+        insidePromptBar.style.width = width + "%"
+        insidePromptBar.style.marginLeft = "8px"
+        insidePromptBar.style.marginRight = "8px"
       } else if (includePromptBar == false) {
-        promptBar.style.width = "";
-        promptBar.style.justifyContent = "";
-        promptBar.className = "stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl";
+        promptBar.style.width = ""
+        promptBar.style.justifyContent = ""
+        promptBar.className =
+          "stretch mx-2 flex flex-row gap-3 last:mb-2 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl"
 
         insidePromptBar.style.width = ""
-        insidePromptBar.style.marginLeft = "";
-        insidePromptBar.style.marginRight = "";
-        insidePromptBar.className = "relative flex h-full flex-1 items-stretch md:flex-col";
+        insidePromptBar.style.marginLeft = ""
+        insidePromptBar.style.marginRight = ""
+        insidePromptBar.className =
+          "relative flex h-full flex-1 items-stretch md:flex-col"
       }
+
+      const textarea = promptBar.querySelector("textarea")
+      console.log(textarea, result.promptBarHeight)
+      const promptBarHeightLib = ["200px", "45vh", "90vh"]
+      textarea.style.maxHeight = promptBarHeightLib[result.promptBarHeight]
     }
   )
 }
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  chrome.storage.local.set(request);
+  chrome.storage.local.set(request)
   refreshElements()
-});
+})
 
 const chatObserver = new MutationObserver((mutationsList, observer) => {
   refreshElements()
-});
+})
 
-chatObserver.observe(document.body, { childList: true, subtree: true });
+chatObserver.observe(document.body, { childList: true, subtree: true })
 
 refreshElements()
