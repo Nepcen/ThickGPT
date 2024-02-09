@@ -16,12 +16,12 @@
 /******************************************************************************************/
 
 :root {
-  --primary: #00a67e;
-  --secondary: #017a5e;
-  --white: white;
+  --primary: #171717;
+  --secondary: #0d0d0d;
+  --white: rgb(199, 199, 199);
   --halfWhite: rgba(255, 255, 255, 0.5);
-  --gray: #828282;
-  --black: black;
+  --gray: #2f2f2f;
+  --black: #0d0d0d;
 
   --form-control-color: #fff;
   --form-control-disabled: #959495;
@@ -32,7 +32,7 @@ body {
   margin: 0;
   padding: 15px 10px;
   background-color: var(--primary);
-  border: 3px solid var(--white);
+  border: 3px solid var(--gray);
   text-align: center;
   color: var(--white);
 }
