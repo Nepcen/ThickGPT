@@ -207,7 +207,7 @@ body {
   background: var(--secondary);
 }
 
-#includePromptBar {
+#includePromptBar, #extendUserMessage {
   width: 20px;
   height: 20px;
   margin: 0 10px;

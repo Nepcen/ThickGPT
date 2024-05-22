@@ -24,5 +24,10 @@ export async function getActiveTabURL() {
     return tabs[0];
 }
 
-export const defaultSliderWidthValue = 46;
+export const defaultThicknessValue = 90;
+export const defaultExtendUserMessageValue = false;
+export const defaultAlignmentValue = "center";
+export const defaultIncludePromptBarValue = false;
+export const defaultPromptBarHeightValue = 0;
+
 

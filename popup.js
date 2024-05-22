@@ -15,103 +15,94 @@
 /*                                                                                        */
 /******************************************************************************************/
 
-import { getActiveTabURL, defaultSliderWidthValue } from "./utils.js"
+import {
+  getActiveTabURL,
+  defaultThicknessValue,
+  defaultExtendUserMessageValue,
+  defaultAlignmentValue,
+  defaultIncludePromptBarValue,
+  defaultPromptBarHeightValue
+} from "./utils.js"
 
-// Slider değeri değiştiğinde background script'e mesaj gönder
 document.addEventListener("DOMContentLoaded", function () {
-  var widthSlider = document.getElementById("widthSlider")
-  var widthSliderValueLabel = document.getElementById("widthSliderValueLabel")
-  var alignmentBtns = document.getElementsByClassName("alignment")
-  var includePromptBar = document.getElementById("includePromptBar")
-  var promptBarHeight = document.getElementById("promptBarHeight")
-  var resetBtn = document.getElementById("resetBtn")
+  const widthSlider = document.getElementById("widthSlider")
+  const widthSliderValueLabel = document.getElementById("widthSliderValueLabel")
+  const extendUserMessage = document.getElementById("extendUserMessage")
+  const alignmentBtns = document.getElementsByClassName("alignment")
+  const includePromptBar = document.getElementById("includePromptBar")
+  const promptBarHeight = document.getElementById("promptBarHeight")
+  const resetBtn = document.getElementById("resetBtn")
+
+  async function updateSetting(settingKey, value) {
+    const activeTab = await getActiveTabURL()
+    if (
+      activeTab.url.includes("chat.openai.com") ||
+      activeTab.url.includes("chatgpt.com")
+    ) {
+      chrome.tabs.sendMessage(activeTab.id, { [settingKey]: value })
+    }
+  }
+
+  function initializeUI(result) {
+    widthSliderValueLabel.textContent = "%" + result.width
+    widthSlider.value = result.width
+    extendUserMessage.checked = result.extendUserMessage
+    document
+      .querySelector(`.alignment#${result.alignment}`)
+      .classList.add("checked")
+    includePromptBar.checked = result.includePromptBar
+    promptBarHeight.value = result.promptBarHeight
+  }
 
   chrome.storage.local.get(
     {
-      width: defaultSliderWidthValue,
-      includePromptBar: false,
-      alignment: "center",
-      promptBarHeight: 0,
+      width: defaultThicknessValue,
+      extendUserMessage: defaultExtendUserMessageValue,
+      alignment: defaultAlignmentValue,
+      includePromptBar: defaultIncludePromptBarValue,
+      promptBarHeight: defaultPromptBarHeightValue
     },
-    function (result) {
-      widthSliderValueLabel.textContent = "%" + result.width
-      widthSlider.value = result.width
-      document
-        .querySelector(`.alignment#${result.alignment}`)
-        .classList.add("checked")
-      includePromptBar.checked = result.includePromptBar
-      promptBarHeight.value = result.promptBarHeight
-    }
+    initializeUI
   )
 
-  widthSlider.addEventListener("input", async function () {
-    const activeTab = await getActiveTabURL()
-    var width = parseInt(widthSlider.value)
-    widthSliderValueLabel.innerHTML = "%" + width
-
-    if (activeTab.url.includes("chat.openai.com")) {
-      chrome.tabs.sendMessage(activeTab.id, {
-        width: width,
-      })
-    }
+  widthSlider.addEventListener("input", function () {
+    const width = parseInt(widthSlider.value)
+    widthSliderValueLabel.textContent = "%" + width
+    updateSetting("width", width)
   })
 
-  for (let i = 0; i < alignmentBtns.length; i++) {
-    alignmentBtns[i].addEventListener("click", async () => {
-      const activeTab = await getActiveTabURL()
-      var alignment = alignmentBtns[i].id
+  extendUserMessage.addEventListener("change", function () {
+    updateSetting("extendUserMessage", extendUserMessage.checked)
+  })
 
-      for (let j = 0; j < alignmentBtns.length; j++) {
-        alignmentBtns[j].classList.remove("checked")
-      }
-
-      alignmentBtns[i].classList.add("checked")
-
-      if (activeTab.url.includes("chat.openai.com")) {
-        chrome.tabs.sendMessage(activeTab.id, {
-          alignment: alignment,
-        })
-      }
+  Array.from(alignmentBtns).forEach((btn) => {
+    btn.addEventListener("click", function () {
+      Array.from(alignmentBtns).forEach((b) => b.classList.remove("checked"))
+      btn.classList.add("checked")
+      updateSetting("alignment", btn.id)
     })
-  }
-
-  includePromptBar.addEventListener("change", async () => {
-    const activeTab = await getActiveTabURL()
-    if (activeTab.url.includes("chat.openai.com")) {
-      chrome.tabs.sendMessage(activeTab.id, {
-        includePromptBar: includePromptBar.checked,
-      })
-    }
   })
 
-  promptBarHeight.addEventListener("change", async () => {
-    console.log(promptBarHeight.value)
-    const activeTab = await getActiveTabURL()
-    if (activeTab.url.includes("chat.openai.com")) {
-      chrome.tabs.sendMessage(activeTab.id, {
-        promptBarHeight: promptBarHeight.value,
-      })
-    }
+  includePromptBar.addEventListener("change", function () {
+    updateSetting("includePromptBar", includePromptBar.checked)
   })
 
-  resetBtn.addEventListener("click", async () => {
-    widthSliderValueLabel.textContent = "%" + defaultSliderWidthValue
-    widthSlider.value = defaultSliderWidthValue
-    for (let j = 0; j < alignmentBtns.length; j++) {
-      alignmentBtns[j].classList.remove("checked")
-    }
-    includePromptBar.checked = false
-    promptBarHeight.value = 0
-    document.querySelector(`.alignment#center`).classList.add("checked")
+  promptBarHeight.addEventListener("change", function () {
+    updateSetting("promptBarHeight", promptBarHeight.value)
+  })
 
-    const activeTab = await getActiveTabURL()
-    if (activeTab.url.includes("chat.openai.com")) {
-      chrome.tabs.sendMessage(activeTab.id, {
-        width: 46,
-        includePromptBar: false,
-        alignment: "center",
-        promptBarHeight: 0,
-      })
-    }
+  resetBtn.addEventListener("click", function () {
+    initializeUI({
+      width: defaultThicknessValue,
+      extendUserMessage: defaultExtendUserMessageValue,
+      alignment: defaultAlignmentValue,
+      includePromptBar: defaultIncludePromptBarValue,
+      promptBarHeight: defaultPromptBarHeightValue
+    })
+    updateSetting("width", defaultThicknessValue)
+    updateSetting("extendUserMessage", defaultExtendUserMessageValue)
+    updateSetting("alignment", defaultAlignmentValue)
+    updateSetting("includePromptBar", defaultIncludePromptBarValue)
+    updateSetting("promptBarHeight", defaultPromptBarHeightValue)
   })
 })

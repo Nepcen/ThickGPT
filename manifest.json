@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
   "name": "ThickGPT",
-  "version": "1.5",
+  "version": "1.6",
   "description": "ThickGPT is better!",
   "permissions": ["storage", "tabs"],
-  "host_permissions": ["https://chat.openai.com/*"],
+  "host_permissions": ["https://chat.openai.com/*","https://chatgpt.com/*"],
   "action": {
     "default_title": "ThickGPT",
     "default_popup": "popup.html",
@@ -19,7 +19,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://chat.openai.com/*"],
+      "matches": ["https://chat.openai.com/*","https://chatgpt.com/*"],
       "js": ["content.js"],
       "type": "module"
     }
@@ -27,7 +27,7 @@
   "web_accessible_resources": [
     {
       "resources": [],
-      "matches": ["https://chat.openai.com/*"]
+      "matches": ["https://chat.openai.com/*","https://chatgpt.com/*"]
     }
   ],
   "icons": {
