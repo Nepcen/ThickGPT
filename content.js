@@ -79,42 +79,45 @@ function refreshElements() {
           element.parentNode.style.display = "flex"
           element.parentNode.style.justifyContent = alignment
         })
+
+        const promptBar = document.querySelector("main form")
+        const promptBarParent = promptBar?.parentNode
+        const insidePromptBar = document.querySelector("main form > div")
+
+        if (includePromptBar == true && promptBar && promptBarParent) {
+          promptBarParent.className =
+            "mx-auto w-full flex flex-1 gap-3 text-base juice:gap-4 juice:md:gap-6 ThickGPT"
+          promptBar.className =
+            "stretch flex flex-row gap-3 last:mb-2 md:last:mb-6 ThickGPT"
+          promptBar.style.width = "100%"
+          promptBar.style.justifyContent = alignment
+
+          insidePromptBar.className =
+            "relative flex h-full items-stretch md:flex-col ThickGPT"
+          insidePromptBar.style.width = width + "%"
+          insidePromptBar.style.marginLeft = "8px"
+          insidePromptBar.style.marginRight = "8px"
+        } else if (includePromptBar == false && promptBar && promptBarParent) {
+          promptBarParent.className =
+            "mx-auto w-full flex flex-1 gap-3 text-base juice:gap-4 juice:md:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]"
+          promptBar.style.width = ""
+          promptBar.style.justifyContent = ""
+          promptBar.className = "w-full flex items-center ThickGPT"
+
+          insidePromptBar.style.width = ""
+          insidePromptBar.style.marginLeft = ""
+          insidePromptBar.style.marginRight = ""
+          insidePromptBar.className =
+            "relative flex max-w-full flex-1 flex-col ThickGPT"
+        }
+
+        
+        const promptBarHeightLib = ["200px", "45vh", "80vh"]
+        const textareaParent = promptBar.querySelector("textarea").parentNode
+        textareaParent.className = "_prosemirror-parent_cy42l_1 text-token-text-primary overflow-auto default-browser"
+        textareaParent.style.maxHeight = promptBarHeightLib[result.promptBarHeight ] 
+        promptBarParent.style.maxHeight = promptBarHeightLib[result.promptBarHeight ] 
       }
-
-      const promptBar = document.querySelector("main form")
-      const promptBarParent = promptBar?.parentNode
-      const insidePromptBar = document.querySelector("main form > div")
-
-      if (includePromptBar == true && promptBar && promptBarParent) {
-        promptBarParent.className =
-          "mx-auto flex flex-1 gap-3 text-base juice:gap-4 juice:md:gap-6 ThickGPT"
-        promptBar.className =
-          "stretch flex flex-row gap-3 last:mb-2 md:last:mb-6 ThickGPT"
-        promptBar.style.width = "100%"
-        promptBar.style.justifyContent = alignment
-
-        insidePromptBar.className =
-          "relative flex h-full items-stretch md:flex-col ThickGPT"
-        insidePromptBar.style.width = width + "%"
-        insidePromptBar.style.marginLeft = "8px"
-        insidePromptBar.style.marginRight = "8px"
-      } else if (includePromptBar == false && promptBar && promptBarParent) {
-        promptBarParent.className =
-          "mx-auto flex flex-1 gap-3 text-base juice:gap-4 juice:md:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]"
-        promptBar.style.width = ""
-        promptBar.style.justifyContent = ""
-        promptBar.className = "w-full ThickGPT"
-
-        insidePromptBar.style.width = ""
-        insidePromptBar.style.marginLeft = ""
-        insidePromptBar.style.marginRight = ""
-        insidePromptBar.className =
-          "relative flex h-full max-w-full flex-1 flex-col ThickGPT"
-      }
-
-      const textarea = promptBar.querySelector("textarea")
-      const promptBarHeightLib = ["200px", "45vh", "90vh"]
-      textarea.style.maxHeight = promptBarHeightLib[result.promptBarHeight]
     }
   )
 }
