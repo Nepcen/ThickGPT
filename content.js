@@ -25,6 +25,7 @@ console.log(`JBB5    7BBJ   JBBBBBBBBB   GBBBBBBBP?        JG###B5!     JBBBBBBB
 
 console.log("ThickGPT is working")
 
+const defaultIsActive = true;
 const defaultThicknessValue = 90
 const defaultExtendUserMessageValue = false
 const defaultAlignmentValue = "center"
@@ -34,6 +35,7 @@ const defaultPromptBarHeightValue = 0
 function refreshElements() {
   chrome.storage.local.get(
     {
+      isActive : defaultIsActive,
       width: defaultThicknessValue,
       extendUserMessage: defaultExtendUserMessageValue,
       alignment: defaultAlignmentValue,
@@ -48,7 +50,7 @@ function refreshElements() {
 
       var elements = document.querySelectorAll("div[data-message-author-role]")
 
-      if (elements?.length) {
+      if (elements?.length && result.isActive) {
         Array.from(elements).forEach((e) => {
           var element = e.parentNode.parentNode.parentNode.parentNode
           if (
@@ -97,7 +99,7 @@ function refreshElements() {
           insidePromptBar.style.width = width + "%"
           insidePromptBar.style.marginLeft = "8px"
           insidePromptBar.style.marginRight = "8px"
-        } else if (includePromptBar == false && promptBar && promptBarParent) {
+        } else if (includePromptBar == false && promptBarParent && promptBar && insidePromptBar) {
           promptBarParent.className =
             "mx-auto w-full flex flex-1 gap-3 text-base juice:gap-4 juice:md:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]"
           promptBar.style.width = ""
@@ -111,12 +113,39 @@ function refreshElements() {
             "relative flex max-w-full flex-1 flex-col ThickGPT"
         }
 
-        
+
         const promptBarHeightLib = ["200px", "45vh", "80vh"]
         const textareaParent = promptBar.querySelector("textarea").parentNode
         textareaParent.className = "_prosemirror-parent_cy42l_1 text-token-text-primary overflow-auto default-browser"
-        textareaParent.style.maxHeight = promptBarHeightLib[result.promptBarHeight ] 
-        promptBarParent.style.maxHeight = promptBarHeightLib[result.promptBarHeight ] 
+        textareaParent.style.maxHeight = promptBarHeightLib[result.promptBarHeight ]
+        promptBarParent.style.maxHeight = promptBarHeightLib[result.promptBarHeight ]
+      }else if(!result.isActive){
+        // Array.from(elements).forEach((e) => {
+        //   var element = e.parentNode.parentNode.parentNode.parentNode
+        //   element.className = "mx-auto flex flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]"
+        // })
+
+        // const promptBar = document.querySelector("main form")
+        // const promptBarParent = promptBar?.parentNode
+        // const insidePromptBar = document.querySelector("main form > div")
+
+        // promptBarParent?.className =
+        //   "mx-auto w-full flex flex-1 gap-3 text-base juice:gap-4 juice:md:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]"
+        // promptBar?.style.width = ""
+        // promptBar?.style.justifyContent = ""
+        // promptBar?.className = "w-full flex items-center ThickGPT"
+
+        // insidePromptBar?.style.width = ""
+        // insidePromptBar?.style.marginLeft = ""
+        // insidePromptBar?.style.marginRight = ""
+        // insidePromptBar?.className =
+        //   "relative flex max-w-full flex-1 flex-col ThickGPT"
+
+
+        // const textareaParent = promptBar.querySelector("textarea").parentNode
+        // textareaParent?.className = "_prosemirror-parent_cy42l_1 text-token-text-primary max-h-[25dvh] max-h-52 overflow-auto default-browser"
+        // textareaParent?.style.maxHeight = ""
+        // promptBarParent?.style.maxHeight = ""
       }
     }
   )

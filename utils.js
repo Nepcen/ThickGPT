@@ -24,6 +24,7 @@ export async function getActiveTabURL() {
     return tabs[0];
 }
 
+export const defaultIsActive = true;
 export const defaultThicknessValue = 90;
 export const defaultExtendUserMessageValue = false;
 export const defaultAlignmentValue = "center";

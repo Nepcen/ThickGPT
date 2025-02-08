@@ -17,6 +17,7 @@
 
 import {
   getActiveTabURL,
+  defaultIsActive,
   defaultThicknessValue,
   defaultExtendUserMessageValue,
   defaultAlignmentValue,
@@ -25,6 +26,8 @@ import {
 } from "./utils.js"
 
 document.addEventListener("DOMContentLoaded", function () {
+  const powerBtns = document.querySelectorAll("#powerBtnWrapper svg")
+  const mainBlur = document.getElementById("mainBlur")
   const widthSlider = document.getElementById("widthSlider")
   const widthSliderValueLabel = document.getElementById("widthSliderValueLabel")
   const extendUserMessage = document.getElementById("extendUserMessage")
@@ -44,6 +47,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function initializeUI(result) {
+    if(result.isActive == true){
+      document.querySelector('svg[data-is-active="true"]').style.display = ""
+      document.querySelector('svg[data-is-active="false"]').style.display = "none"
+      mainBlur.style.display = "none"
+    }else{
+      document.querySelector('svg[data-is-active="true"]').style.display = "none"
+      document.querySelector('svg[data-is-active="false"]').style.display = ""
+      mainBlur.style.display = ""
+    }
     widthSliderValueLabel.textContent = "%" + result.width
     widthSlider.value = result.width
     extendUserMessage.checked = result.extendUserMessage
@@ -56,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   chrome.storage.local.get(
     {
+      isActive : defaultIsActive,
       width: defaultThicknessValue,
       extendUserMessage: defaultExtendUserMessageValue,
       alignment: defaultAlignmentValue,
@@ -64,6 +77,22 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     initializeUI
   )
+
+  Array.from(powerBtns).forEach((btn) => {
+    btn.addEventListener("click", function () {
+      if(btn.getAttribute("data-is-active") == "true"){
+        document.querySelector('svg[data-is-active="true"]').style.display = "none"
+        document.querySelector('svg[data-is-active="false"]').style.display = ""
+        mainBlur.style.display = ""
+        updateSetting("isActive", false)
+      }else{
+        document.querySelector('svg[data-is-active="true"]').style.display = ""
+        document.querySelector('svg[data-is-active="false"]').style.display = "none"
+        mainBlur.style.display = "none"
+        updateSetting("isActive", true)
+      }
+    })
+  })
 
   widthSlider.addEventListener("input", function () {
     const width = parseInt(widthSlider.value)
@@ -93,12 +122,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   resetBtn.addEventListener("click", function () {
     initializeUI({
+      isActive : defaultIsActive,
       width: defaultThicknessValue,
       extendUserMessage: defaultExtendUserMessageValue,
       alignment: defaultAlignmentValue,
       includePromptBar: defaultIncludePromptBarValue,
       promptBarHeight: defaultPromptBarHeightValue
     })
+    updateSetting("isActive", defaultIsActive)
     updateSetting("width", defaultThicknessValue)
     updateSetting("extendUserMessage", defaultExtendUserMessageValue)
     updateSetting("alignment", defaultAlignmentValue)
